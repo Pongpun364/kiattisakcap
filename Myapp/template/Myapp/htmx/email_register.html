@@ -1,0 +1,27 @@
+{% load static %}
+
+{% if checkMail == "Pass" %}
+	<div class="form-group valid" id="checkma" hx-swap="outerHTML swap:1.5s" >
+		<label for="email">อีเมลล์:</label>
+		<input type="email" class="form-control"  id="email" name="email" value="{{return_email}}" hx-post="{% url "checkemail" %}" hx-target="#checkma" >
+
+		<img id="ind" src="{% static "svg/bars.svg" %}" class="hidden" width = "40px" height="18px" />
+	</div>
+
+{% elif checkMail == "False" %}
+	<div class="form-group error" id="checkma" hx-swap="outerHTML swap:1.5s"  >
+		<label for="email">อีเมลล์:</label>
+		<input type="email" class="form-control"  id="email" name="email" value="{{return_email}}" hx-post="{% url "checkemail" %}" hx-target="#checkma" >
+
+		<img id="ind" src="{% static "svg/bars.svg" %}" class="hidden" width = "40px" height="18px"/>
+		<div class='error-message'>อีเมลล์นี้มีผู้ใช้งานเเล้ว กรุณาใช้อีเมลล์อื่น</div>
+	</div>
+	
+{% else %}
+	<div class="form-group" id="checkma" hx-swap="outerHTML swap:1.5s" >
+		<label for="email">อีเมลล์:</label>
+		<input type="email" class="form-control"  id="email" name="email" hx-post="{% url "checkemail" %}" hx-target="#checkma" >
+
+		<img id="ind" src="{% static "svg/bars.svg" %}" width = "40px" height="18px" class="hidden" />
+	</div>
+{% endif %}

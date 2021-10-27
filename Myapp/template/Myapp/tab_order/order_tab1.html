@@ -1,0 +1,90 @@
+
+{% load humanize %}
+
+
+
+
+<div class="tab-content">
+	{% for od in allorder %}
+		<div class = "row justify-content-center mb-3">
+			<div class = "col-12 my-box bg-white shadow-lg ">
+				<div class = 'box-element p-sm-3 p-md-3 p-lg-3'>
+
+					<div class = "list-group list-group-flush">
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col">
+									<h3># {{forloop.counter}}</h3>
+								</div>
+								{% if od.comment == "" %}
+								{% else %}
+								<div class="col">
+									<div class="alert alert-warning" role="alert">
+										<span>{{ od.comment }}</span>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+						</div>
+						<div class="list-group-item">
+						<div class="row">
+							<div class="col">
+							<p style="margin:0">รายละเอียดเพิ่มเติม:</p>
+							</div>
+							<div class="col">
+							<a  class="btn btn-primary btn-sm" href="{% url 'myorderdetail-page' od.orderid %}" >{{od.orderid}}</a>
+							{% comment %} <button hx-target="body" class="btn btn-primary btn-sm" hx-get="{% url 'myorderdetail-page' od.orderid %}" hx-swap="beforeend" >{{od.orderid}}</button> {% endcomment %}
+							</div>
+						</div>
+						</div>
+						<div class="list-group-item money">
+							<div class="d-flex justify-content-between ">
+								<div class="col">
+								<p style="margin:0">ค่าส่ง:</p>
+								</div>
+								<div class="col">
+								<strong>{{od.shipcost| intcomma}}</strong>
+								</div>
+							</div>
+							
+							<div class="d-flex justify-content-between ">
+								<div class="col">
+								<p style="margin:0">โอนทั้งหมด:</p>
+								</div>
+								<div class="col">
+								<span class="text-success"><strong>{{od.shipcost|add:od.total| intcomma}}</strong></span>
+								</div>
+								
+							</div>
+							<hr />
+							<div class="d-flex justify-content-between ">
+								<div class="col">
+								<p style="margin:0">รูปเเบบการชำระ:</p>
+								</div>
+								<div class="col">
+								{% if od.payment == "cod"%}
+								<span class="text-primary"><strong>เก็บเงินปลายทาง</strong></span>
+								{% else %}
+								<span class="text-primary"><strong>โอนเงิน</strong></span>
+								{% endif %}
+								</div>
+								
+							</div>
+						</div>
+						<div class="list-group-item">
+						<div class="row">
+							<div class="col">
+							<p>สถานะการสั่งซื้อ:</p>
+							</div>
+							<div class="col">
+							<p  class = 'btn btn-success btn-sm'><i class="	fa fa-credit-card" style = 'font-size: 16px'>&nbsp ดำเนินการชำระ</i></p>
+							</div>
+						</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		{%endfor%}
+</div>

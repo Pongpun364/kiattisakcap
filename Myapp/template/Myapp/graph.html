@@ -1,0 +1,35 @@
+{% extends 'Myapp/Base.html' %}  
+{% block header  %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+{% endblock header %} 
+
+{% block content0 %}
+<h3><center> Graph &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</center></h3>
+	
+<canvas id="myChart" style="width:100%;max-width:1000px; margin-bottom: 50px"></canvas>
+<script>
+
+    var xValues = {{pdname|safe}};
+    var yValues = {{pdquan}};
+    var barColors = {{pdcolor|safe}};
+
+
+    new Chart("myChart", {
+    type: "pie",
+    data: {
+        labels: xValues,
+        datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+        }]
+    },
+    options: {
+        title: {
+        display: true,
+        text: "สัดส่วนสินค้าที่ลูกค้าสั่ง"
+        }
+    }
+    });
+</script>
+
+{% endblock content0%}

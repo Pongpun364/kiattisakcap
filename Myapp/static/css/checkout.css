@@ -1,0 +1,9 @@
+
+
+.anima {
+
+    opacity: 0;
+	content: "";
+    transition: all ease-in 1s
+
+}

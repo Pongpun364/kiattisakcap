@@ -1,0 +1,124 @@
+
+{% extends 'Myapp/Base.html' %}  
+{% load humanize %}
+{% load static %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+
+{% load custom_tag %}
+{% block content0 %}
+	<link rel="stylesheet" type="text/css" href={% static "css/tab.css" %} >
+
+
+
+<div class="container  " style = 'margin-bottom: 400px;margin-top: 100px'>
+			<h3>รายการสั่งซื้อทั้งหมด</h3>
+			<p>สถานะรายการสั่งซื้อ ท่านสามารถอัปโหลดไฟล์รูปสลิปได้</p>
+
+
+
+		<div class="slidemenu px-0 mx-0 row justify-content-center justify-content-lg-end">
+
+			<!-- tab1 -->
+			{% if tabs == 1 %}
+			<input  hx-get={% url "order_tab1"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem"  id="slide-item-1" class="slide-toggle" checked/>
+			{% else %}
+			<input  hx-get={% url "order_tab1"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem"  id="slide-item-1" class="slide-toggle" />	
+			{% endif %}		
+			<label for="slide-item-1">
+			<div class="col">
+			<p class="icon"><i class="fab fa-btc"></i></p><span>ที่ต้องชำระ</span>
+			</div>
+			</label>
+			
+			
+			<!-- tab2 -->
+			{% if tabs == 2 %}
+			<input hx-get={% url "order_tab2"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-2" class="slide-toggle" checked/>
+			{% else %}
+			<input hx-get={% url "order_tab2"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-2" class="slide-toggle" />
+			{% endif %}	
+			<label for="slide-item-2">
+			<div class="col">
+			<p class="icon"><i class="fa fa-hourglass-half" ></i></p><span>รอการอนุมัติ</span>
+			</div>
+			</label>
+			
+			<!-- tab3 -->
+			{% if tabs == 3 %}
+			<input hx-get={% url "order_tab3"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-3" class="slide-toggle" checked/>
+			{% else %}
+			<input hx-get={% url "order_tab3"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-3" class="slide-toggle" />
+			{% endif %}	
+			<label for="slide-item-3">
+			<div class="col">
+			<p class="icon"><i class='fa fa-truck' ></i></p><span>รอจัดส่ง</span>
+			</div>
+			</label>
+			
+			<!-- tab4 -->
+			{% if tabs == 4 %}
+			<input hx-get={% url "order_tab4"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-4" class="slide-toggle" checked/>
+			{% else %}
+			<input hx-get={% url "order_tab4"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-4" class="slide-toggle" />
+			{% endif %}	
+			<label for="slide-item-4">
+			<div class="col">
+			<p class="icon"><i class="fa fa-cubes" ></i></p><span>จัดส่งเเล้ว</span>
+			</div>
+			</label>
+			
+
+			<!-- tab5 -->
+			{% if tabs == 5 %}
+			<input hx-get={% url "order_tab5"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-5" class="slide-toggle" checked/>
+			{% else %}
+			<input hx-get={% url "order_tab5"%} hx-indicator="none" hx-target="#tabs" hx-swap="innerHTML swap:500ms" type="radio" name="slideItem" id="slide-item-5" class="slide-toggle" />
+			{% endif %}	
+			<label for="slide-item-5">
+			<div class="col">
+			<p class="icon"><i class="fa fa-child" ></i></p><span>ได้รับของ</span>
+			</div>
+			</label>
+			
+		<div class="clear"></div>
+
+		<!-- Bar -->
+		<div class="slider">
+			<div class="bar"></div>
+		</div>
+		
+		</div>
+
+
+
+
+		{% if tabs == 1 %}
+		<div id="tabs" hx-get="{% url "order_tab1"%}" hx-trigger="load after:100ms" hx-target="#tabs" hx-swap="innerHTML" ></div>
+		{% elif tabs == 2 %}
+		<div id="tabs" hx-get="{% url "order_tab2"%}" hx-trigger="load after:100ms" hx-target="#tabs" hx-swap="innerHTML" ></div>
+		{% elif tabs == 3 %}
+		<div id="tabs"  hx-get="{% url "order_tab3"%}" hx-trigger="load after:100ms" hx-target="#tabs" hx-swap="innerHTML" ></div>
+		{% elif tabs == 4 %}
+		<div id="tabs" hx-get="{% url "order_tab4"%}" hx-trigger="load after:100ms" hx-target="#tabs" hx-swap="innerHTML" ></div>
+		{% elif tabs == 5 %}
+		<div id="tabs" hx-get="{% url "order_tab5"%}" hx-trigger="load after:100ms" hx-target="#tabs" hx-swap="innerHTML" ></div>
+		{% else %}
+		<div id="tabs" hx-get="{% url "order_tab1"%}" hx-trigger="load after:100ms" hx-target="#tabs" hx-swap="innerHTML" ></div>
+		{% endif %} 
+
+
+</div>
+
+
+
+
+{% endblock content0%}
+
+
+
+
+
+

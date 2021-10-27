@@ -1,0 +1,64 @@
+
+
+{% extends 'Myapp/Base.html' %}  
+
+
+
+
+
+
+
+{% block content0 %}
+
+
+
+
+<div class = 'container' style = 'margin-bottom: 100px;margin-top: 120px'>
+
+<div class="row justify-content-center">
+	<div class="col-lg-6 ">
+
+	<div class="box-element shadow p-4 mb-5 bg-white rounded">
+
+
+
+
+  
+
+  <h2>เข้าสู่ระบบ</h2>
+  <p>กรุณากรอกอีเมล เเละ พาสเวิร์ด เพื่อเข้าสู่ระบบ</p>
+    <form method = "POST" >	 
+
+		{% csrf_token %} 
+
+		<div class="form-group">
+			<label for="username">อีเมลล์/Username:</label>
+			<input type="text" class="form-control" id="username" name="username">
+		</div>
+
+        <div class="form-group">
+			<label for="password">รหัสผ่าน:</label>
+			<input type="password" class="form-control" id="password" name="password">
+		</div>
+
+
+
+
+
+		<button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+
+</div>
+</div>
+</div>
+</div>
+
+{% endblock content0%}
+
+
+
+
+
+
+

@@ -1,0 +1,230 @@
+
+.btn-group-sm>.btn, .btn-sm {
+    font-size: .75rem!important;
+}
+
+
+.borderme{
+	border-bottom: 1px solid #ddd;
+
+}
+
+.myorder{
+	border-radius:0.85rem!important;
+	margin-right: 5rem!important;
+}
+.tota{
+	color: #36cc00;
+	font-weight: 700;
+}
+
+
+
+/* from style.css*/
+
+body{
+	background-color: hsl(0, 0%, 98%);
+}
+
+.hidden{
+	display: none!important;
+}
+
+
+
+/* ตอนรีเควสมาถึง user เเล้ว    */
+@keyframes transitionIn{
+	from {
+		opacity: 0;
+		transform: rotateX(-10deg);
+	}
+	to{
+		opacity: 1;
+		transform: rotateX(0);
+
+	}
+}
+
+.content {
+	animation: transitionIn 0.9s;
+}
+
+
+
+
+/* style for registerform*/
+.error-message {
+    color:red;
+  }
+.error input {
+	box-shadow: 0 0 6px #CC0000;
+}
+.valid input {
+	box-shadow: 0 0 6px #36cc00;
+}
+
+.htmx-swapping img {
+	display: inline;
+}
+.hidden {
+	display: none;
+}
+
+/* style for cartquan icon */
+
+
+.pagination{
+    display: inline-flex;
+    position: relative;
+}
+.pagination li a.page-link{
+    color: #333;
+    background-color: #e9e9e9;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 40px;
+    height: 40px;
+    width: 35px;
+    padding: 0;
+    margin: 0 7px 6px;
+    border: none;
+    border-radius: 0;
+    position: relative;
+    z-index: 1;
+    transition: all 0.5s ease 0s;
+}
+.pagination li a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link:hover,
+.pagination li.active a.page-link{
+    color: #fff;
+    background: #e9e9e9;
+}
+.pagination li a.page-link:before,
+.pagination li a.page-link:after{
+    content: '';
+    background-color: #333;
+    height: 3px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    transition: all 0.3s ease 0s;
+}
+.pagination li a.page-link:after{
+    background: linear-gradient(#1dd1a1 50%, #10ac84 50%);
+    height: 12px;
+    transform: scaleX(0);
+    bottom: -6px;
+}
+.pagination li a.page-link:hover:before,
+.pagination li a.page-link:focus:before,
+.pagination li.active a.page-link:hover:before,
+.pagination li.active a.page-link:before{
+    height: 100%;
+}
+.pagination li a.page-link:hover:after,
+.pagination li a.page-link:focus:after,
+.pagination li.active a.page-link:hover:after,
+.pagination li.active a.page-link:after{
+    transform: scaleX(0.25);
+}
+@media only screen and (max-width: 480px){
+    .pagination{
+        font-size: 0;
+        display: inline-block;
+    }
+    .pagination li{
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 0 10px;
+    }
+}
+
+
+/* ิbutton style  */
+
+.custom-btn {
+width: 100%;
+height: 70px;
+padding: 10px 25px;
+border: 2px solid #000;
+
+font-weight: 500;
+background: transparent;
+cursor: pointer;
+transition: all 0.3s ease;
+position: relative;
+display: inline-block;
+}
+
+/* 7 */
+.btn-7 {
+background: #000;
+color: #fff;
+line-height: 42px;
+padding: 0;
+border: none;
+z-index: 1;
+-webkit-transition: all 0.3s linear;
+	transition: all 0.3s linear;
+}
+.btn-7:hover {
+background: transparent;
+color: #000;
+}
+.btn-7:before,
+.btn-7:after {
+position: absolute;
+content: "";
+left: 0;
+width: 100%;
+height: 50%;
+right: 0;
+z-index: -1;
+background: #000;
+transition: all 0.3s ease;
+}
+.btn-7:before {
+top: 0;
+}
+.btn-7:after {
+bottom: 0;
+}
+ .btn-7:hover:before,
+.btn-7:hover:after {
+height: 0;
+background-color: #000;
+} 
+
+/* mycart_page style  */
+
+@media(max-width: 425px) {
+
+    body {
+        font-size: 0.85rem
+    }
+	h4{
+		font-size: 1rem
+	}
+	h3{
+		font-size: 1.2rem
+	}
+	h2{
+		font-size: 1.4rem
+	}
+
+
+	.fa {
+		font-size: 1.5rem !important;
+	}
+	.mua {
+		text-align: center !important;
+	}
+
+
+}
+
+
+

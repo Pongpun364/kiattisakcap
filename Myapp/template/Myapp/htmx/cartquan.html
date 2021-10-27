@@ -1,0 +1,13 @@
+<div id="ano" class="cart-nav">
+{% if user.is_authenticated and user.profile.usertype == 'admin'%}
+
+{% elif  user.is_authenticated %}
+    <i class="fa fa-shopping-cart fa-2x" ></i>
+    <span  class='badge badge-success ' id='lblCartCount'>{{user.profile.cartquan}}</span>
+{% else %}
+  
+    <i class="fa fa-shopping-cart fa-2x " ></i>
+    <span class='badge badge-success ' id='lblCartCount'>{{Sum_quantity}}</span>
+ 
+{% endif %}
+</div>

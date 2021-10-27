@@ -1,0 +1,130 @@
+{% extends 'Myapp/Base.html' %}  
+{% load humanize%}
+{% load static %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+{% load markdown_extra %}
+{% block content0 %}
+<link rel="stylesheet" href={% static 'css/customer_order.css' %}>
+<link rel="stylesheet" href={% static 'css/myorder_modal.css' %}>
+
+
+<div class="d-flex flex-column justify-content-center align-items-center " style="margin-top:120px" id="order-heading">
+	<div class="text-uppercase">
+		<p>รายละเอียดคำสั่งซื้อ</p>
+	</div>
+	<div class="h4">{{order.stamp}}</div>
+	<div class="pt-1">
+		<p>เลขคำสั่งซื้อ #{{order.orderid}} ขณะนี้กำลังอยู่ในขั้นตอน <b class="text-dark"> รอการอนุมัติ</b></p>
+	</div>
+	{% if user.profile.usertype == "admin"%}
+	<div class="btn close text-white" hx-get="{% url "allorderlist_mobile" %}" hx-swap="outerHTML" hx-select = "#idf" hx-target = "#idf" hx-indicator="none"> &times; </div>
+	{% else %}
+	<div class="btn close text-white" hx-get="{% url "orderlist-page" %}" hx-swap="outerHTML" hx-select = "#idf" hx-target = "#idf" hx-indicator="none"> &times; </div>
+	{% endif %}
+</div>
+<div class="wrapper bg-white">
+	<div class="table-responsive">
+		<table class="table table-borderless">
+			<thead>
+				<tr class="text-uppercase text-muted">
+					<th scope="col">สินค้า</th>
+					<th scope="col" class="text-right">รวม</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td ></td>
+					<td class="text-right"><b>{{ order.total| intcomma}} บาท</b></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{% for pd in odlist %}
+
+	<div class="d-flex justify-content-start align-items-center list py-1">
+		<div><b>{{pd.quantity}} X </b></div>
+		<div class="mx-3"> <img src="{{pd.Image}}" class="rounded-circle" width="40" height="40"> </div>
+		<div class="order-item">{{pd.productname}}</div>
+	</div>
+
+{%endfor%}
+
+	<div class="pt-2 border-bottom mb-3 "></div>
+	<div class="d-flex justify-content-start align-items-center pl-3 ">
+		<div class="text-muted">วิธีการชำระเงิน</div>
+		<div class="ml-auto"> 
+			{% if order.payment == "cod"%}
+			<label>เก็บเงินปลายทาง</label>
+			{% else %}
+			<label>อัปโหลดสลิปเงินสด</label>
+			{% endif %}
+		</div>
+	</div>
+	<div class="d-flex justify-content-start align-items-center py-1 pl-3 ">
+		<div class="text-muted">ค่าจัดส่ง</div>
+		<div class="ml-auto"> <label>{{order.shipcost}}</label> </div>
+	</div>
+
+	<div class="border-bottom "></div>
+
+	<div class="d-flex justify-content-start align-items-center pl-3 py-3 mb-4 border-bottom ">
+		<div class="text-muted"> รวมทั้งหมด </div>
+		<div class="ml-auto h5 text-success price"> {{order.total|add:order.shipcost| intcomma}}</div>
+	</div>
+	<div class="row  rounded p-1 my-3 subscriptions">
+		<div class="col-md-6 py-3">
+			<div class="d-flex flex-column align-items start"> <b>ที่อยู่จัดส่ง</b>
+				<p class="text-justify pt-2">{{order.address}} {{order.zipcode}}</p>
+				<p class="text-justify">ชื่อผู้รับ: {{order.customername}}</p>
+				<p class="text-justify">เบอร์โทร: {{order.tel}}</p>
+				<p class="text-justify">หมายเหตุ: {{order.other}}</p>
+			</div>
+		</div>
+	</div>
+	<div class="mt-2">
+		{%if order.paid %}
+		<button class="btn btn-block d-flex justify-content-center py-3">
+			<i class="fa fa-check pt-1 pr-1"></i> <label>ชำระเเล้ว</label>
+		</button>
+		{%elif order.slip%}
+		<button class="btn btn-block d-flex justify-content-center py-3" hx-target="body" hx-get="{% url 'uploadslip-page' order.orderid %}" hx-swap="beforeend">
+			<i class="fa fa-eye pt-1 pr-1"></i> <label>รอการตรวจสอบ</label>
+		</button>
+		{%else%}
+		<button class="btn btn-block d-flex justify-content-center py-3" hx-target="body" hx-get="{% url 'uploadslip-page' order.orderid %}" hx-swap="beforeend">
+			<i class="fa fa-credit-card pt-1 pr-1"></i> <label>ชำระเงิน</label>
+		</button>
+		{%endif%}
+
+	</div>
+</div>
+
+
+
+{% endblock content0 %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+
+
+

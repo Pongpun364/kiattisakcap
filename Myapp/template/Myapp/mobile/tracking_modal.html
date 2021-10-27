@@ -1,0 +1,39 @@
+
+
+
+{% load static %}
+{% load humanize %}
+
+
+<div id="modal" _="on closeModal add .closing then wait for animationend then remove me">
+	<div class="modal-underlay" _="on click trigger closeModal" hx-get="{% url "allorderlist_mobile" %}" hx-swap="outerHTML" hx-target="#idf" hx-select="#idf" hx-trigger="click"></div>
+	<div class="modal-content">
+
+
+
+		<div class = 'container' style = 'margin-bottom: 100px'>
+
+		  <form method="POST" hx-target="#modal" hx- hx-post="{% url 'Updatetrackingmobile' order.orderid %}" hx-swap="outerHTML" >	 
+
+				<div class="form-group">
+					<label for="trackingnumber">เลขพัสดุ</label>
+					<input type="text" class="form-control" id="trackingnumber" name="trackingnumber" value="{{order.trackingnumber}}">
+				</div>
+
+				<button type="submit" class="btn btn-primary">บันทึก</button>
+		</form>
+
+		</div>
+
+		<br>
+		<button _="on click trigger closeModal" class="btn btn-primary"  hx-get="{% url "allorderlist_mobile" %}" hx-swap="outerHTML" hx-target="#idf" hx-select="#idf" hx-trigger="click">Close</button>
+	</div>
+</div>
+
+
+
+
+
+
+
+

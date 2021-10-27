@@ -1,0 +1,90 @@
+
+{% extends 'Myapp/Base.html' %}  
+{% load humanize%}
+{% load static %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>  
+{% endblock %}
+{% block content0 %}
+ <link rel="stylesheet" href={% static 'css/myorder_modal.css' %}>
+<link rel="stylesheet" href={% static 'css/allorder_mobile.css' %}>
+
+
+	<div class="container px-0" style = 'margin-bottom: 20px;margin-top: 100px;'>
+		<div class="row mr-2" id = "allorder_mobile">
+			{% for od in allorder %}
+				<div class="col-12 p-sm-3 p-md-3 p-lg-3 shadow-lg myorder ml-2 mb-3 pr-4 pb-2 bg-white">
+
+					<div class="row">
+						<div class="mr-auto ml-2">
+						<strong>#{{od.orderid}}</strong>
+						({{od.customername}})
+						</div>
+						<div class="ml-auto mr-1">
+							<small class="text-muted">{{od.stamp}}</small>
+						</div>
+					</div>
+					<div class="row mt-1">
+						<div class="flex-fill pl-2 d-flex flex-column">
+							<div class="d-flex mb-2">
+								{% if od.payment == "cod" %}
+								<strong class="text-success">ปลายทาง</strong>
+								{% elif od.payment == "transfer"%}
+								<strong class="text-success">โอน</strong>
+								{% endif %}
+							</div>
+							<div class="d-flex"><a  class="btn btn-primary btn-sm" href="{% url 'myorderdetail-page' od.orderid %}" >รายละเอียด</a></div>
+						</div>
+						<div class="flex-fill d-flex flex-column">
+							<div class="d-flex mr-2"><div class="mr-auto">ยอดรวม<span class="text-muted">(ไม่รวมส่ง):<span></div><div class="ml-auto">{{od.total| intcomma}}</div></div>
+							<div class="d-flex mr-2 borderme"><div class="mr-auto">ค่าส่ง:</div><div class="ml-auto">{{od.shipcost| intcomma}}</div></div>
+							
+							<div class="d-flex mr-2"><div class="mr-auto">ทั้งหมด:</div><div class="ml-auto tota">{{od.shipcost|add:od.total| intcomma}}</div></div>										
+						</div>
+					</div>
+
+					<div class="row pl-2 mt-2">
+						<div class="d-flex flex-fill flex-column">
+							<div class="flex-fill">
+								{%if od.slip %}
+								<a class="btn btn-sm btn-primary" hx-target="body" hx-get="{% url 'slipview' od.orderid %}" hx-swap="beforeend">ดูสลิป</a>
+								{%else%}
+									<i class="fa fa-times-rectangle" style = 'font-size: 32px; color: red'></i>
+								{%endif%}
+							</div>
+							<div class="flex-fill">
+								<a class="btn btn-sm btn-primary" hx-target="body" hx-get="{% url 'commentmodal' od.orderid %}" hx-swap="beforeend">คอมเมนท์</a>
+							</div>                                       
+						</div>
+						<div class="d-flex flex-fill flex-column">
+							<div class="flex-fill">							
+									{% if od.approved %}
+										<a hx-post={% url 'updatepaidmobile' od.orderid 'cancel' %}  hx-target="#allorder_mobile" hx-select="#allorder_mobile" hx-swap="outerHTML" hx-indicator="none" class = 'btn btn-light' ><i class="fa fa-check-square" style = 'font-size: 32px; color: green'></i></a>
+									{% else %}
+										<a hx-post={% url 'updatepaidmobile' od.orderid 'confirm' %}  hx-target="#allorder_mobile"  hx-select="#allorder_mobile" hx-swap="outerHTML" hx-indicator="none" class = 'btn btn-light' ><i class="fa fa-thumbs-up" style = 'font-size: 16px; color: blue'>ยืนยัน</i></a>
+									{% endif %}
+							</div>	
+							<div class="flex-fill">
+							<a class="btn btn-sm btn-primary" hx-target="body" hx-get="{% url 'Updatetrackingmobile' od.orderid %}" hx-swap="beforeend">trackingnumber</a>
+							</div>	
+						</div>	
+					</div>					
+				</div>
+			{%endfor%}
+			<br>
+
+		</div>
+	</div>
+	
+
+
+
+			
+
+{% endblock content0%}
+
+
+
+
+
+

@@ -1,0 +1,54 @@
+
+{% extends 'Myapp/Base.html' %}  
+{%load static %}
+{% block scriptss%}
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+	<script>
+
+		$(document).ready(function () {
+			// Using a Promise object
+			liff.init({
+				liffId: '1656487843-L6qaEeJe' // Use own liffId
+			})
+			.then(() => {
+				// Start to use liff's api
+				liff.getProfile()
+				.then(profile => {
+					console.log("profile = ",profile)
+					//liff.openWindow({
+					//url: "https://d1fc-2001-44c8-45c8-166a-e041-ffb0-9317-e036.ngrok.io/sayhi/"+profile.displayName,
+					//});
+					//關閉視窗 liff.closeWindow(); 
+				})
+				.catch((err) => {
+				console.log('error', err);
+				});
+
+			})
+			.catch((err) => {
+				// Error happens during initialization
+				console.log(err.code, err.message);
+			});
+		});
+		
+	</script>
+{% endblock %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+
+
+{% block content0 %}
+
+	<h3> คุณคือ  </h3>
+
+
+
+
+{% endblock content0%}
+
+
+
+
+

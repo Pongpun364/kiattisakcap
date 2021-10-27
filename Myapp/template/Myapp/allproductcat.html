@@ -1,0 +1,129 @@
+
+{% extends 'Myapp/Base.html' %}  
+{% load humanize %}
+{% load static %}
+{% load markdown_extra %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+{% block content0 %}
+{% load custom_tag%}
+<script type="text/javascript" src="{% static "js/jquery-ui.js" %}" ></script>
+<link rel="stylesheet" href={% static 'css/allproduct.css' %}  />
+
+	<h3 class = "pt-5"> สินค้าหมวด "{{catname}}" ทั้งหมดในร้าน </h3>
+	<p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+		<div class="container-fluid px-0">
+			<div class = 'row'>
+				
+				{% for pd in product %}
+					
+					<div class = 'd-flex col-lg-4 col-md-6 col-sm-6 col-6 px-0 ' >
+						
+						<div class="rounded card card2 p-1  bg-white item" >
+							{% if pd.Image %}
+							<img class="card-img-top img-fluid rounded" alt="item" src="{{pd.Image.url}}" >
+							{%else%}
+							<img class="card-img-top img-fluid rounded" src="/media/SD-default-image.png" >
+							{%endif%}
+							<div class="card-body px-0" >
+								<h4 class="card-title">{{pd.name|truncatechars:18 }}</h4>
+								<p class="card-text">ราคา: {{pd.price| intcomma }} บาท/{{pd.unit}}</p>
+								<div class="card-footer btn-wrapper bg-transparent px-0 pb-0 ">
+									<!-- ปุ่มเเรก -->
+									{% if user.is_authenticated and user.profile.usertype == 'admin'%}
+										<a href = "{% url 'editproduct-page' pd.id  %}" class = "btn btn-success add">เเก้ไขรายละเอียดสินค้า</a>
+									{% elif user.is_authenticated %}
+
+										{% if pd.instock == True and pd.quantity > 0 %}
+											<form method="POST" class="buttons" hx-post= {% url "updatecart"  %} hx-trigger="submit delay:1200ms" hx-swap="outerHTML" hx-indicator="none" hx-target="#ano">											
+											<input type="hidden" class="form-control" name="pid" value={{pd.id}}>	
+											<button  type="submit" class = "btn btn-outline-success cart-btn add"><i class="fa fa-cart-plus fa-lg"></i></button>
+											</form>		
+										{%else%}
+											<a href = "#" class = "btn btn-danger add"><i class="fa fa-times-circle-o fa-lg"></i></a>
+										{% endif %}
+
+									{% else %}
+
+										{% if pd.instock == True and pd.quantity > 0 %}	
+											<div class="buttons" id="anonymous-add" hx-get= {% url "cartquan_htmx" %} hx-trigger="Updated delay:1200ms" hx-indicator="none" hx-target="#ano">
+											<input type="hidden" name="pid" value={{pd.id}}>		
+											<button  class = "btn btn-outline-success addto-cart cart-btn add"><i class="fa fa-cart-plus fa-lg"></i></button>
+											</div>
+										{% else %}																										
+											<a href = "#" class = "btn btn-danger add"><i class="fa fa-times-circle-o fa-lg"></i></a>
+										{% endif %}
+									
+									{% endif %}
+									<!-- ปุ่มสอง -->
+									<a href="{% url 'product-page' pd.id %}" class="btn btn-outline-primary detail">รายละเอียด</a>
+								</div>
+							</div>
+						</div>
+						
+						<br><br>
+					</div>
+					
+				{% endfor %}
+				
+			</div>
+		
+		</div>
+
+	<center>
+	<ul class="pagination">
+		
+
+		{% if product.has_previous == True and product.has_next == True%}
+		<li class="page-item"><a class="page-link" href="?page={{product.previous_page_number}}"><</a></li>
+		<li class="page-item"><a class="page-link" href="?page={{product.number|add:-1}}">{{product.number|add:-1}}</a></li>
+		{% endif %}
+
+
+		{%if product.has_next%}
+		<li class="page-item active"><a class="page-link" href="?page={{product.number}}">{{product.number}}</a></li>
+		{%endif%}
+
+		{% if product.has_next == True and product.has_previous == True %}
+		<li class="page-item"><a class="page-link" href="?page={{product.number|add:1}}">{{product.number|add:1}}</a></li>
+		<li class="page-item"><a class="page-link" href='?page={{product.next_page_number}}'>></a></li>
+		{% elif product.has_next == False and product.has_previous == True %}
+		<li class="page-item"><a class="page-link" href="?page={{product.previous_page_number}}"><</a></li>
+		{% elif product.has_next == True and product.has_previous == False %}
+		<li class="page-item"><a class="page-link" href="?page={{product.number|add:1}}">{{product.number|add:1}}</a></li>
+		<li class="page-item"><a class="page-link" href="?page={{product.number|add:2}}">{{product.number|add:2}}</a></li>
+		<li class="page-item"><a class="page-link" href='?page={{product.next_page_number}}'>></a></li>
+		{% endif %}
+		
+	</ul>
+	</center>
+	<center><p>หน้าที่ {{product.number}} จากทั้งหมด {{product.paginator.num_pages}} หน้า</p></center>
+	<!-- bottom navbar -->
+	<nav class="navbar mobile fixed-bottom navbar-light ">
+		<div class="row">
+			<div style="flex: 2">
+  			<a class="navbar-brand" href="#">ยินดีต้อนรับ</a>
+			</div>
+			<div style="flex: 10" class="cart">
+				<div class="d-flex" style = 'float:right;'>
+				<span>ตะกร้าสินค้า</span>
+				<a href = '{% url 'mycart-page'%}' style = 'color: #347aeb'>
+				{% showCartquan %}
+				</a>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<script type="text/javascript" src="{% static "js/script_cart.js" %}" ></script>
+	<script type = "text/javascript" src = "{% static 'js/cart.js' %}"></script>
+
+
+	
+{% endblock content0 %}
+
+
+
+
+

@@ -1,0 +1,87 @@
+
+{% extends 'Myapp/Base.html' %}  
+{% load static %}
+
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+
+{% block content0 %}
+
+
+
+
+<div class = 'container' style = 'margin-bottom: 100px'>
+
+
+
+
+  
+
+  <h2>เพิ่มสินค้าในระบบ</h2>
+  <p>คุณสามารถเพิ่มสินค้าเข้าไปในระบบได้ (เฉพาะแอดมิน)</p>
+  <form method = "POST" enctype= "multipart/form-data">	 
+		{% csrf_token %} 
+
+
+		<div class="form-group">
+			<label for="name">ชื่อสินค้า:</label>
+			<input type="text" class="form-control" id="name" name="name">
+		</div>
+
+
+		<div class="form-group">
+			<label for="price">ราคา:</label>
+			<input type="text" class="form-control" id="price" name="price">
+		</div>
+
+
+		<div class="form-group">
+			<label for="detail">รายละเอียด:</label>
+			<textarea class="form-control" rows="5" id="detail" name = 'detail'></textarea>
+		</div>
+
+
+		<div class="form-group">
+			<label for="Imageurl">URL รูปสินค้า:</label>
+			<input type="text" class="form-control" id="Imageurl" name="Imageurl">
+		</div>
+
+		<div class="form-group">
+			<label for="quantity">จำนวน:</label>
+			<input type="text" class="form-control" id="quantity" name="quantity">
+		</div>
+
+		<div class="form-group">
+			<label for="unit">หน่วย:</label>
+			<input type="text" class="form-control" id="unit" name="unit">
+		</div>
+
+		<div class="form-group">
+			<label for="Imageupload">เลือกรูปภาพจากเครื่องของคุณ</label>
+			<input type="file" class="form-control" id="Imageupload" name="Imageupload">
+		</div>
+
+
+
+		{% comment %} <div class="form-group">
+			<label for="Image">อัปโหลดไฟล์รูปสินค้า:</label>
+			<input type="text" class="form-control" id="Image" name="Image">
+		</div> {% endcomment %}
+
+
+		<button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+
+</div>
+
+{% endblock content0%}
+
+
+
+
+
+
+

@@ -1,0 +1,190 @@
+
+{% extends 'Myapp/Base.html' %}  
+{% load humanize%}
+{% load markdown_extra %}
+{% load static %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+	
+	
+{% block content0 %}
+<script type="text/javascript" src="{% static "js/xzoom.js" %}" ></script>
+<link rel="stylesheet" type="text/css" href={% static "css/xzoom.css" %} media="all"  />
+<link rel="stylesheet" href={% static 'css/productdetail.css' %}  />
+<script type="text/javascript" src="{% static "js/bootstrap-input-spinner.js" %}" ></script>
+<script type="text/javascript" src="{% static "js/jquery-ui.js" %}" ></script>
+
+
+
+	<div class="row" style="margin-bottom: 200px; margin-top: 100px" >
+		<div class="col-md-6" >
+		<h4> {{product.name| markdown | safe}} </h4>
+		{% comment %} {% if product.Image %}
+			<img  src="{{product.Image.url}}" class = "img-fluid">
+		{% elif product.Imageurl %}
+			<img  src="{{product.Imageurl}}" class = "img-fluid">
+		{%else%}
+			<img  src="/media/SD-default-image.png" class = "img-fluid">
+		{%endif%} {% endcomment %}
+			<div class="container d-flex justify-content-center">
+				<section id="default" >
+					<div class="row">
+						<div class="large-5 column">
+							<div class="xzoom-container"> 
+								<img class="xzoom img-fluid" id="xzoom-default" src="{{product.Image.url}}" xoriginal="{{product.Image.url}}" />
+								<div class="xzoom-thumbs"> 
+									<a href="{{product.Image.url}}"> <img class="xzoom-gallery"  width="80"  src="{{product.Image.url}}" xpreview="{{product.Image.url}}"></a> 
+									<a href="{{product.Image2.url}}"> <img class="xzoom-gallery" width="80"  src="{{product.Image2.url}}"> </a>
+									<a href="{{product.Image3.url}}"> <img class="xzoom-gallery" width="80"  src="{{product.Image3.url}}"></a>
+									<a href="{{product.Image4.url}}"> <img class="xzoom-gallery" width="80"  src="{{product.Image4.url}}"></a> 
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-5 " >
+		<br><br>
+		{{product.detail | markdown | safe}}
+		<h4>ราคา {{ product.price }}</h4>
+
+		<h3>Test</h3>
+			<div class = "card " style="max-width: 380px;min-width: 290px;">
+			{% comment %} margin-left: auto; margin-right: auto; {% endcomment %}
+				<div class="list-group list-group-flush" >
+					<div class="list-group-item">
+						<div class = "row">
+							<div class = "col">Cras justo odio</div>
+							<div class = "col">Cras justo odio</div>
+						</div>
+					</div>
+					<div class="list-group-item">
+						<div class = "row">
+							<div class = "col">Cras justo odio</div>
+							<div class = "col">Cras justo odio</div>
+						</div>
+					</div>
+					<div class="list-group-item">
+						<div class = "row">
+							<div class = "col">Cras justo odio</div>
+							<div class = "col">Cras justo odiobbbbbbbbbbbbb</div>
+						</div>
+					</div>
+					<div class="list-group-item">
+						<div class = "row">
+							<div class = "col">Cras justo odio</div>
+							<div class = "col" >
+								<div style="width: 130px;">
+								{% if user.is_authenticated %}
+									{% if product.instock == True and product.quantity > 0 %}
+										<form  id= "quann" method="POST" hx-post= {% url "addtocart-page" product.id  %} hx-target="#ano" hx-swap="outerHTML" hx-trigger="submit delay:1200ms" hx-indicator="None" >
+											{% csrf_token %}
+											<input  id="spinner"  class="form-control" type="text" required name="quantity" value="1" min="0" max="{{product.quantity}}" step="1"/>
+											{% comment %} <p>Input: <span id="minput"></span></p> {% endcomment %}
+											
+										</form>
+									{%else%}
+										<a href = "#" class = "btn btn-danger btn-block">สินค้าหมดเเล้ว</a>
+									{% endif %}
+								{% else %}
+									{% if product.instock == True and product.quantity > 0 %}
+									
+										<div>													
+											<input type="hidden" name="pid" value={{product.id}}>																
+											<input   class=" spinner-anonymous" type="text" required name="quantity" value="1" min="0" max="{{product.quantity}}" step="1"/>
+										</div>
+
+									{%else%}
+										<a href = "#" class = "btn btn-danger btn-block">สินค้าหมดเเล้ว</a>
+									{% endif %}
+
+								{% endif %}
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item ">
+					{% if user.is_authenticated %}
+						<button  form = "quann" type="submit" class="custom-btn btn-7 cart-btn" >
+							เพิ่มลงในตะกร้าสินค้า
+						</button>
+					{% else %}
+						<button  class="custom-btn btn-7 cart-btn" id="anonymous_wa" hx-get= {% url "cartquan_htmx"  %}  hx-indicator="none" hx-trigger="update_mycart delay:1200ms" hx-target="#ano" >
+							เพิ่มลงในตะกร้าสินค้า
+						</button> 
+					{% endif %}
+					</div>
+				</div>
+			</div>
+		
+		</div>
+
+	</div>
+
+
+
+<script type = "text/javascript" src = "{% static 'js/xzoom_setup.js' %}"></script>
+<script type="text/javascript" src="{% static "js/script_productdetail.js" %}" ></script>
+
+<script>
+	$("#spinner").inputSpinner()
+	$(".spinner-anonymous").inputSpinner()
+
+	
+	$("#anonymous_wa").on("click", function (event) {
+
+		var pid = $(".spinner-anonymous").siblings().val()
+		var pvalue = $(".spinner-anonymous").val()
+		console.log("pid = ",pid,"pvalue = ",pvalue)
+		/* ทำการเขียนข้อมูลลงใน cookie */
+		addcookieItem(pid,pvalue)
+		
+	})
+
+	function addcookieItem(pid,pvalue){
+		console.log('not loged in ...')
+		/*cart = {
+			1:{'quantity':5},
+			9:{'quantity':2},
+			8:{'quantity':4},
+			7:{'quantity':5},
+			2:{'quantity':5},
+		} */
+
+        if(cart[pid] == undefined ){
+             cart[pid] = {'quantity': parseInt(pvalue)}
+        }else{
+           cart[pid]['quantity'] += parseInt(pvalue)
+        }
+
+		
+		console.log('cart' ,cart)
+		document.cookie = 'cart=' + JSON.stringify(cart) + ';domain;path=/'
+		htmx.trigger(htmx.find("#anonymous_wa"), "update_mycart")
+
+	}
+
+	/*console.log("value = ",$(this).val()) */
+
+
+
+
+	{% comment %} $("#spinner").on("input",function(e){
+		$("#minput").html($(this).val())
+	}) {% endcomment %}
+
+</script>
+
+	
+{% endblock content0 %}
+
+
+
+
+

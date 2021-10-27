@@ -1,0 +1,5 @@
+
+{% comment %} หน้าเเบบนี้ใช้ถ้าใช้ view ธรรมดาเรียก จะต้อง query allcats หลายๆ ครั้ง {% endcomment %}
+{% for cat in allcats %}
+<a class="dropdown-item" href="{% url 'category-page' cat.id %}">{{cat.catname}}</a>
+{% endfor %}

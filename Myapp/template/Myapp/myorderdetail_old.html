@@ -1,0 +1,115 @@
+
+
+
+
+
+{% load humanize%}
+
+
+
+
+<div id="modal" _="on closeModal add .closing then wait for animationend then remove me">
+	<div class="modal-underlay" _="on click trigger closeModal"></div>
+	<div class="modal-content">
+	
+
+		<div class='container'>
+		<h3>ข้อมูลการจัดส่ง</h3>
+		<p>
+			ORDER ID: {{order.orderid}} <br>
+			ชื่อผู้รับ : {{order.customername}} <br>
+			เบอร์โทร : {{order.tel}} <br>
+			ที่อยู่จัดส่ง : {{order.address}} <br>
+			{% if order.shipping == 'ems'%}
+			รูปแบบการจัดส่ง : EMS <br>
+			{%else%}
+			รูปแบบการจัดส่ง : ลงทะเบียน <br>
+			{%endif%}
+			{% if order.payment == 'tranfer'%}
+			ชำระผ่าน : โอนผ่านบัญชีธนาคาร <br>
+			{%else%}
+			ชำระผ่าน : เก็บเงินปลายทาง <br>
+			{%endif%}
+			หมายเหตุ : {{order.other}}<br>
+		</p>
+		</div>
+
+		<div class="container" style = 'margin-bottom: 20px'>
+			<h3>ตะกร้าสินค้าของฉัน</h3>
+			<p>สินค้าทั้งหมดของลูกค้าที่อยู่ในตะกร้า พร้อมยืนยันการสั่งซื้อ</p>
+			<table class="table">
+				<thead>
+				<tr>
+
+
+					
+			
+					<th>รายการ</th>
+					<th>ราคา</th>
+					<th>จำนวน</th>
+					<th>รวมยอด</th>
+					
+				</tr>
+				</thead>
+				<tbody>
+					{% for pd in odlist %}
+
+						<tr>
+						
+						
+							<td>{{pd.productname}}</td>
+							<td>{{pd.price| intcomma}}</td>
+							<td>{{pd.quantity}}</td>
+							<td>{{pd.total| intcomma}}</td>
+							
+						</tr>			
+
+					{%endfor%}
+
+					<tr>		
+				
+			
+					<th></th>
+					<th></th>
+					<th>{{count}} ชิ้น</th>
+					<th>{{order.total| intcomma}}</th>
+					<th></th>				
+					</tr>
+
+				</tbody>
+			</table>
+			<p>ค่าจัดส่ง: {{order.shipcost| intcomma}}</p>
+			<h2>รวมยอดโอนทั้งหมด  {{order.total|add:order.shipcost| intcomma}}  บาท<h2>
+
+	
+		</div>
+	
+		<br>
+		<button _="on click trigger closeModal" class="btn btn-primary">Close</button>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+    
+
+
+
+
+
+
+
+

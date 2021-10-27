@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+{% load static  %}
+{% load custom_tag %}
+<html lang="en">
+<head>
+	<title>kiattisakcap</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> {% endcomment %}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>  
+	{% block styles %}
+
+	{% endblock %}
+	{% block scriptss%}
+	
+	{% endblock %}
+	<link rel="icon" href="/media/Logo_1024.png">
+	<script src="https://unpkg.com/hyperscript.org@0.8.1"></script>
+	<script src="https://unpkg.com/htmx.org@1.5.0"></script>
+
+	<script type = "text/javascript">
+		var user = "{{request.user}}"
+		// ตัวเเปรข้างนอก ไม่ต้องใส ; ข้างหลังนะจร้ะ
+		function getToken(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+				const cookies = document.cookie.split(';');
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken');
+
+
+		function getCookie(name){
+			//split cookie string and get all individual name=value pairs in an array
+			var cookieArr = document.cookie.split(';');
+			// loop through the array element
+			for(var i = 0; i < cookieArr.length; i++){
+
+				var cookiePair = cookieArr[i].split('=');
+
+				/* removing whitespace at the beginnig of the cookie name
+				 and compare it with the given string */
+				if(name == cookiePair[0].trim()){
+					//decode the cookie value and return
+					return decodeURIComponent(cookiePair[1]);
+				}
+			}
+			// return null if not found !!!
+			return null;
+		}
+
+		var cart = JSON.parse(getCookie('cart'))
+		if(cart == undefined){
+			cart = {}
+			console.log('Cart was created !!!')
+			document.cookie = 'cart=' + JSON.stringify(cart) + ';domain;path=/'
+
+		}
+		console.log('cart;', cart)
+
+		{% comment %} var email = JSON.parse(getCookie('email'))
+		if(email == undefined){
+			email = ''
+			console.log('email was created !!!')
+			document.cookie = 'email=' + JSON.stringify(email) + ';domain;path=/'
+
+		} {% endcomment %}
+		console.log('cart;', cart)
+
+
+
+	</script>
+
+</head>
+
+
+ 
+<body>
+
+<!-- Messenger ปลั๊กอินแชท Code -->
+  <div id="fb-root"></div>
+
+    <!-- Your ปลั๊กอินแชท code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    {% comment %} <script>
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "104950065273237");
+      chatbox.setAttribute("attribution", "biz_inbox");
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v12.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script> {% endcomment %}
+
+
+<div id="idf">
+
+<!-- Navbar-->
+
+    <nav class="navbar navbar-expand-md fixed-top bg-dark ">
+        <div class="container">
+			<a href='{% url 'home-page'%}' class="navbar-brand"><img src = "/media/Logo_1024.png" class="logo logopic"  alt="logo"/></a>
+			<div class="d-flex order-lg-1 ml-auto pr-2">
+				<div style="padding:10px">
+				</div>
+				{% if not user.is_authenticated or user.profile.usertype != 'admin' %}
+					<a href = '{% url 'mycart-page'%}' style = 'color: #347aeb'>
+					{% showCartquan %}
+					</a>
+				{% endif %}
+			</div>
+            <button type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right" ><i class="fa fa-bars"></i></button>
+
+            <div id="navbarSupportedContent" class="collapse navbar-collapse" >
+				<ul class="navbar-nav mr-auto">
+						<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ประเภทสินค้า</a>
+						<div class="dropdown-menu" aria-labelledby="dropdown01">
+							{% all_cat %} 
+						</div>
+						</li>
+					{%if user.is_authenticated and user.profile.usertype == 'admin' %}
+							<li class="nav-item">					
+							<a class="nav-link" href = '{% url 'addproduct-page'%}' style = 'color: yellow' > เพิ่มสินค้า </a>  					
+							</li>
+							<li class="nav-item">
+							<a class="nav-link" href = '{% url 'allproduct-page'%}'> สินค้าทั้งหมด({% showAllproduct %}) </a>
+							</li>
+							<li class="nav-item">
+							<a class="nav-link" href = '{% url 'allorderlist-page'%}'> รายการสั่งซื้อทั้งหมด </a>
+							</li>
+					{% elif user.is_authenticated  and user.profile.usertype != 'admin' %}
+					<li class="nav-item">
+					<a class="nav-link" href = '{% url 'contact-page'%}'> ติดต่อ </a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link" href = '{% url 'about-page'%}'> เกี่ยวกับเรา </a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link" href = '{% url 'allproduct-page'%}'> สินค้าทั้งหมด({% showAllproduct %}) </a>
+					</li>
+
+					<li class="nav-item">
+					<a class="nav-link" href = '{% url 'orderlist-page'%}'> Order Status </a>
+					</li>
+
+					{%else%}
+						<li class="nav-item">
+						<a class="nav-link" href = '{% url 'contact-page'%}'> ติดต่อ </a>
+						</li>
+						<li class="nav-item">
+						<a class="nav-link" href = '{% url 'about-page'%}'> เกี่ยวกับเรา </a>
+						</li>
+						<li class="nav-item">
+						<a class="nav-link" href = '{% url 'allproduct-page'%}'> สินค้าทั้งหมด({% showAllproduct %}) </a>
+						</li>
+
+						</li>
+						<li class="nav-item">
+						<a class="nav-link" href = '{% url 'orderlist-page'%}'> Order Status </a>
+						</li>
+
+					{%endif%}
+					
+					
+				</ul>
+				
+				
+				{% if user.is_authenticated %}
+				<img src = "{{user.profile.photo.url}}" width = '40' height = '40' class = 'rounded-circle'>&nbsp&nbsp&nbsp
+				<p style = 'color: white; margin-top: 10px'>สวัสดีคุณ&nbsp&nbsp {{user.first_name}} </p>&nbsp&nbsp&nbsp
+				<a class = "btn btn-secondary" href = '/logout/'>ออกจากระบบ</a>
+
+				{%else%}
+
+
+
+				<a class = "btn btn-primary" href = '{% url 'register-page'%}'>สมัครสมาชิก</a>&nbsp&nbsp&nbsp
+				
+				<a class = "btn btn-primary" href = '/login/'>เข้าสู่ระบบ</a>
+				
+
+				{%endif%}
+            </div>
+
+        </div>
+    </nav>
+
+<!--carousel-->
+{% block carousel %}
+
+{% endblock carousel %}
+
+
+
+<div class="container " style = 'margin-top: 70px;margin-bottom: 200px'>
+
+
+	{% block content0  %}
+
+
+	{% endblock content0 %} 
+</div>
+
+
+
+<script type = "text/javascript" src = "{% static 'js/all_style.js' %}"></script>
+<script>
+		document.body.addEventListener('htmx:configRequest', (event) => {
+  		event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+		})
+
+		/* for page reloading*/
+		document.onreadystatechange = function() {
+
+		if (document.readyState !== "complete") {
+			
+			document.querySelector("#idf").classList.add("htmx-request")
+		} else {
+			document.querySelector("#idf").classList.remove("htmx-request")
+		}
+
+		};
+
+
+
+</script>
+
+</div>
+<!-- footer-->
+<div class="row bg-light text-center text-white " style="margin-bottom:57px;margin-top:120px;">
+  <!-- Grid container -->
+  <div class="col-12 p-2 pb-0" style="background-color:white;">
+    <!-- Section: Social media -->
+    <section class="mb-1 d-flex justify-content-center">
+	  <p class="tett">
+			visit us on facebook
+	  </p>
+      <!-- Facebook -->
+      <a
+        class="btn btn-primary btn-floating m-1 shadow"
+        style="background-color: #3b5998;"
+        href="#!"
+        role="button"
+        ><i class="fab fa-facebook-f"></i
+      ></a>
+
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="col-12 text-center p-3 pb-8" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2021 Copyright:
+    <a class="text-white" href="https://kiattisakcap.com/">kiattisakcap.com</a>
+  </div>
+  <!-- Copyright -->
+</div>
+
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,26 @@
+
+
+<div id="modal" _="on closeModal add .closing then wait for animationend then remove me">
+	<div class="modal-underlay" _="on click trigger closeModal" hx-get="{% url "allorderlist_mobile" %}" hx-swap="outerHTML" hx-target="#idf" hx-select="#idf" hx-trigger="click"></div>
+	<div class="modal-content">
+
+
+
+		<div class = 'container' style = 'margin-bottom: 100px'>
+
+		<img src = {{image}} class="img-fluid rounded" alt="/media/SD-default-image.png"/>
+
+		</div>
+
+		<br>
+		<button _="on click trigger closeModal" class="btn btn-primary"  hx-get="{% url "allorderlist_mobile" %}" hx-swap="outerHTML" hx-target="#idf" hx-select="#idf" hx-trigger="click">Close</button>
+	</div>
+</div>
+
+
+
+
+
+
+
+

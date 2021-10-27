@@ -1,0 +1,282 @@
+/*
+*
+* ==========================================
+* CUSTOM UTIL CLASSES
+* ==========================================
+*
+*/
+.navbar {
+	transition: all 0.4s;
+	
+}
+
+.navbar .nav-link {
+	color: rgb(167, 176, 177);
+}
+.navbar .nav-link:hover {
+	color: #fff;
+	font-weight: bold;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+	color: #fff;
+	text-decoration: none;
+}
+
+.navbar .navbar-brand {
+	color: #fff;
+}
+
+
+/* Change navbar styling on scroll */
+.navbar.active {
+	background: #fff;
+	box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.active .nav-link {
+	color: #555;
+}
+.navbar.active .nav-link:hover {
+	color: rgb(0, 0, 0) !important;
+	font-weight: bold;
+}
+
+
+
+.navbar.active .navbar-brand {
+	color: #555;
+	
+}
+
+#ano:hover {
+	transform: scale(1.2) !important;
+  
+}
+
+
+
+/* Change navbar styling on small viewports */
+/* @media (max-width: 991.98px) {
+	.navbar {
+		background: #fff;
+	}
+
+	.navbar .navbar-brand, .navbar .nav-link {
+		color: #555;
+	}
+} */
+
+
+
+
+/*
+*
+* ==========================================
+* CART quantity style
+* ==========================================
+*
+*/
+
+.badge {
+	padding-left: 9px;
+	padding-right: 9px;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+  }
+  
+.label-success[href],
+.badge-success[href] {
+background-color: #c67605;
+}
+#lblCartCount {
+	font-size: 12px;
+	background: #249c0c;
+	color: #fff;
+	padding: 0 5px;
+	vertical-align: top;
+	margin-left: -10px; 
+}
+
+/*
+*
+* ==========================================
+* CARD SHADOW HOVER style
+* ==========================================
+*
+*/
+
+
+.card2 {
+	display: block;
+	top: 0px;
+	position: relative;
+	
+	background-color: white;
+	border-radius: 4px;
+	padding: 32px 24px;
+	margin: 12px;
+	text-decoration: none;
+	z-index: 0;
+	overflow: hidden;
+	border: 1px solid #f2f8f9;
+}
+.card2:hover {
+	  transition: all 0.2s ease-out;
+	  box-shadow: 5px 6px 10px rgba(38, 38, 38, 0.2);
+	  top: -4px;
+	  border: 1px solid #cccccc;
+	  background-color: white;
+	}
+  
+.card2:before {
+	  content: "";
+	  position: absolute;
+	  z-index: -1;
+	  top: -16px;
+	  right: -16px;
+	  background: #00838d;
+
+	  border-radius: 32px;
+	  transform: scale(2);
+	  transform-origin: 50% 50%;
+	  transition: transform 0.15s ease-out;
+	}
+  
+.card2:hover:before {
+	  transform: scale(2.15);
+	 
+	}
+.logo{
+	width: 60px;
+	height: 60px;
+	margin-top: 0rem!important;
+	margin-bottom: 0rem!important;
+	margin-left: -4rem!important;
+	
+}
+.logo-white{
+	width: 60px;
+	height: 60px;
+	margin-top: 0rem!important;
+	margin-bottom: 0rem!important;
+	margin-left: -4rem!important;
+	filter: brightness(0);
+}
+	
+/* Extra small devices (portrait phones, less than 576px)*/
+
+@media (max-width: 575px) { 
+
+	.card2 {
+		margin-left: 0px!important;
+		margin-right: 0px!important;
+		box-shadow: 5px 6px 10px rgba(38, 38, 38, 0.2) !important;
+	}
+	.container {
+		padding-left: 0px !important;
+
+	}
+	.row {
+		margin-left: 0px !important;
+		margin-right: 0px !important;
+	}
+	.d-flex.col-lg-4.col-md-6.col-sm-6.col-6.px-0 {
+		padding-left: 3px !important;
+		padding-right: 3px !important;
+	}
+	.btn-wrapper .add {
+		transform: scale(0.85) !important;
+		flex-basis: 28%!important;
+	
+	}
+	.btn-wrapper .detail {
+		transform: scale(0.85) !important;
+		flex-basis: 72%!important;
+		margin-left: -9px!important;
+
+	}
+	.navbar.mobile {
+		display:block !important;
+	}
+	.cart div{
+		flex-direction: column-reverse;
+		margin-left: 17px;
+	}
+	.cart div span{
+		margin-top: -5px;
+	}
+	.logo,.logo-white{
+		width: 45px!important;
+		height: 45px!important;
+		margin-left: 0rem!important;
+		margin-top: -1rem!important;
+		margin-bottom: -1rem!important;
+	}
+	.carousel.slide{
+		margin-top: 55px!important;
+	}
+
+ }
+
+
+/*
+*
+* ==========================================
+* cart style
+* ==========================================
+*
+*/
+.delete_cart:hover{
+	color: crimson;
+}
+
+/*
+*
+* ==========================================
+* money style
+* ==========================================
+*
+*/
+
+.money {
+    background-color: #eee;
+    
+}
+
+
+/*
+*
+* ==========================================
+* button allproduct
+* ==========================================
+*
+*/
+.btn-wrapper{
+	display: flex;
+
+}
+.btn-wrapper .add {
+	flex-basis: 28%;
+	margin-left: 7px;
+
+}
+.btn-wrapper .detail {
+	flex-basis: 65%;
+    margin-left: 7px;
+	
+}
+
+.tett{
+	font-style: italic;
+	font-weight: 500;
+	color: #555;
+	margin-top: 0.6rem;
+	margin-right: 0.75rem;
+}
+.btn-floating{
+	border-radius: 50%;
+	width: 2.5rem!important;
+}

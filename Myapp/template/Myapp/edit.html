@@ -1,0 +1,77 @@
+
+{% extends 'Myapp/Base.html' %}  
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+
+{% block content0 %}
+
+{%if status == 'delete' %}
+ <div class="alert alert-danger">
+    <strong>ลบสินค้าเรียบร้อยเเล้ว!</strong> ท่านสามารถกดสั่งใหม่ได้ ถ้าต้องการ
+  </div>
+{%endif%}
+
+
+	<div class="container" style = 'margin-bottom: 400px'>
+		<h3>ท่านสามารถเเก้ไขข้อมูลในตะกร้าสินค้าได้</h3>
+
+		<form method = "POST" id = 'formsave' >	 
+           {% csrf_token %} 
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>รหัส</th>
+                    <th>รายการ</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>ลบ</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for pd in mycart %}
+
+                        <tr>
+                            
+                            <td>{{pd.productid}}</td>
+                            <td>{{pd.productname}}</td>
+                            <td>{{pd.price}}</td>
+                            <td><input type = 'text' name = 'pd_{{pd.productid}}' value = '{{pd.quantity}}'></td>
+                            
+                        			
+                        <th>
+                            -
+                        </th>
+                        
+                        </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+
+            <input type = 'hidden' name = 'checksave' value = 'checksave'>
+
+		</form>
+
+        <div class = 'row'>
+            <button type = 'submit'  form = 'formsave'   class = 'btn btn-primary'>SAVE</button>
+            <div style = 'padding: 10px'></div>
+            <form id = 'formclear' method = 'POST' onsubmit ="return confirm('ยืนยันการลบสินค้าทั้งหมด ใช่หรือไม่ ?');">  
+                    {% csrf_token %}                   
+                    <input type = 'hidden' name = 'clear' value = 'clear'>
+                    <button type = 'submit'  form = 'formclear'   class = 'btn btn-danger'>CLEAR</button>
+            </form>
+        </div>
+
+	</div>
+
+			
+
+{% endblock content0%}
+
+
+
+
+
+

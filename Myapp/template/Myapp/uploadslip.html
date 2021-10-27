@@ -1,0 +1,63 @@
+
+
+
+{% load static %}
+{% load humanize %}
+
+
+<div id="modal" _="on closeModal add .closing then wait for animationend then remove me">
+	<div class="modal-underlay" _="on click trigger closeModal" hx-get="{% url "myorderdetail-page" orderid %}" hx-swap="outerHTML" hx-target="#idf" hx-trigger="click"></div>
+	<div class="modal-content">
+
+
+
+		<div class = 'container' style = 'margin-bottom: 100px'>
+
+		<h2>อัปโหลดสลิป</h2>
+		<p>คุณสามารถอัปโหลดไฟล์สลิปของ ORDER: {{orderid}} <br>
+			ยอดสินค้ารวม : {{total| intcomma}} บาท <br>
+			ค่าส่ง : {{shipcost| intcomma}} บาท<br>
+			รวมยอดโอนทั้งหมด : {{grandtotal| intcomma}} บาท<br>
+			จำนวนสินค้า    {{count}}  ชิ้น<br>
+			ประเภทการจัดส่งสินค้า : {{oddetail.shipping}}<br> </p>
+
+			{% if oddetail.slip %}
+
+				<img src = '{{oddetail.slip.url}}' class="img-fluid">
+				<p ><center style = 'color: green' >กรุณารอการตรวจสอบจากเจ้าหน้าที่</center></p>
+
+			{%else%}
+
+			<form method = "POST" hx-target="#modal" hx-post="{% url 'uploadslip-page' orderid %}" hx-swap="outerHTML"  hx-encoding="multipart/form-data">	 
+				
+				
+				<div class="form-group">
+					<label for="sliptime">วันเวลาที่โอน</label>
+					<input type="text" class="form-control" id="sliptime" name="sliptime" placeholder = 'ตัวอย่างเช่น: 2020/09/30 18:00'>
+				</div>
+
+				<div class="form-group">
+					<label for="slip">อัปโหลดสลิปโอนเงิน</label>
+					<input required type="file" class="form-control" id="slip" name="slip">
+				</div>
+
+				<input type="hidden" class="form-control" id="orderid" name="orderid" value="{{orderid}}">
+	
+				<button type="submit" class="btn btn-success">Submit</button>
+			</form>
+
+			{%endif%}
+		</div>
+
+		<br>
+		<button _="on click trigger closeModal" class="btn btn-primary" hx-get="{% url "myorderdetail-page" orderid %}" hx-swap="outerHTML" hx-target="#idf" hx-trigger="click">Close</button>
+	</div>
+</div>
+
+
+
+
+
+
+
+

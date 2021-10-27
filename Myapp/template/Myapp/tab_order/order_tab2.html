@@ -1,0 +1,96 @@
+
+{% load humanize %}
+{% comment %} <div class="tab-list">
+	<a hx-get="{% url "order_tab1"%}" hx-indicator="none">ที่ต้องชำระ</a>
+	<a hx-get="{% url "order_tab2"%}" class="selected" hx-indicator="none">รอการอนุมัติ</a>
+	<a hx-get="{% url "order_tab3"%}" hx-indicator="none">รอจัดส่ง</a>
+    <a hx-get="{% url "order_tab4"%}" hx-indicator="none">จัดส่งเเล้ว</a>
+	<a hx-get="{% url "order_tab5"%}" hx-indicator="none">ได้รับของเเล้ว</a>
+</div> {% endcomment %}
+
+<div class="tab-content">
+	{% for od in allorder %}
+		<div class = "row justify-content-center ">
+			<div class = "col-md-8 px-0">
+				<div class = 'box-element shadow p-sm-3 p-md-3 p-lg-3 px-0 mb-3 bg-white rounded'>
+
+					<div class = "list-group list-group-flush">
+						<div class="list-group-item">
+							<div class="row">
+								<div class="col">
+									<h3># {{forloop.counter}}</h3>
+								</div>
+								{% if od.comment == "" %}
+								{% else %}
+								<div class="col">
+									<div class="alert alert-warning" role="alert">
+										<span>{{ od.comment }}</span>
+									</div>
+								</div>
+								{% endif %}
+							</div>
+						</div>
+						<div class="list-group-item">
+						<div class="row">
+							<div class="col">
+							<p style="margin:0">รายละเอียดเพิ่มเติม:</p>
+							</div>
+							<div class="col">
+							<a  class="btn btn-primary btn-sm" href="{% url 'myorderdetail-page' od.orderid %}" >{{od.orderid}}</a>
+							{% comment %} <button hx-target="body" class="btn btn-primary btn-sm" hx-get="{% url 'myorderdetail-page' od.orderid %}" hx-swap="beforeend" >{{od.orderid}}</button> {% endcomment %}
+							</div>
+						</div>
+						</div>
+						<div class="list-group-item money">
+							<div class="d-flex justify-content-between ">
+								<div class="col">
+								<p style="margin:0">ค่าส่ง:</p>
+								</div>
+								<div class="col">
+								<strong>{{od.shipcost| intcomma}}</strong>
+								</div>
+							</div>
+							
+							<div class="d-flex justify-content-between ">
+								<div class="col">
+								<p style="margin:0">โอนทั้งหมด:</p>
+								</div>
+								<div class="col">
+								<span class="text-success"><strong>{{od.shipcost|add:od.total| intcomma}}</strong></span>
+								</div>
+								
+							</div>
+							<hr />
+							<div class="d-flex justify-content-between ">
+								<div class="col">
+								<p style="margin:0">รูปเเบบการชำระ:</p>
+								</div>
+								<div class="col">
+								{% if od.payment == "cod"%}
+								<span class="text-primary"><strong>เก็บเงินปลายทาง</strong></span>
+								{% else %}
+								<span class="text-primary"><strong>โอนเงิน</strong></span>
+								{% endif %}
+								</div>
+								
+							</div>
+						</div>
+						<div class="list-group-item">
+							<div class="row ">
+								<div class="col">
+									<p>สถานะการสั่งซื้อ:</p>
+								</div>
+								<div class="col">
+									<p  class = 'btn btn-success btn-sm'><i class="	fa fa-credit-card" style = 'font-size: 16px'>&nbsp ดำเนินการชำระ</i></p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		{%endfor%}
+</div>
+
+

@@ -1,0 +1,39 @@
+
+
+
+.mobile div .fbottom .left,.fbottom .right{
+    border:0.7px solid rgb(184, 183, 183);
+    justify-content:center;
+    align-items: center;
+}
+.mobile div .fbottom .left{
+    background-color: white;
+    flex-direction: column-reverse;
+
+}
+
+.mobile div .fbottom .right{
+    background-color: #b0e088;
+}
+
+.mobile div .ftop{
+    background-color: white;
+    border-top: 1px solid rgb(184, 183, 183);
+    box-shadow: 5px 6px 10px rgba(38, 38, 38, 0.2),0px 10px 15px rgba(38, 38, 38, 0.2);
+}
+.mobile div .ftop .left,.ftop .right{
+    flex-direction: column;
+}
+.mobile div .ftop .right{
+    justify-content:center;
+    align-items: center;
+}
+.mobile div .ftop .right .upper{
+    max-width: 125px;
+    margin-top: 0.5em;
+}
+
+.input-group{
+    transform: scale(0.8) !important;
+    transform-origin: center;
+}

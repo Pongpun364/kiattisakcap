@@ -1,0 +1,430 @@
+{% extends 'Myapp/Base.html' %} {% load static %} {% load custom_tag %} 
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+{% block content0 %}
+
+<script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" data-auto-a11y="true"></script>
+
+
+
+ 
+
+
+<div class="row  pt-5">
+	<div class="col-lg-6  ">
+		<div class="box-element shadow p-3 mb-5 bg-white rounded" id="form-wrapper">
+			<form id="form">
+				{% csrf_token %}
+				<h4>ข้อมูลการจัดส่งสินค้า</h4>
+				<hr />
+				<div id="user-info">
+				<div class="form-field">
+					<input
+					required
+					type="text"
+					class="form-control"
+					id="name"
+					name="name"
+					placeholder="ชื่อ-สกุล ผู้รับ"
+					/>
+				</div>
+				{% if user.is_authenticated or user_match == "True"%} {% else %}
+				<div style="padding: 3px"></div>
+				<div class="form-field">
+					<input
+					type="email"
+					class="form-control"
+					id="email"
+					name="email"
+					placeholder="อีเมลล์"
+					/>
+				</div>
+				{% endif %}
+				<div style="padding: 3px"></div>
+				<div class="form-field">
+					<input
+					required
+					type="text"
+					class="form-control"
+					id="tel"
+					name="tel"
+					placeholder="เบอร์โทรศัพท์"
+					/>
+				</div>
+				<div style="padding: 3px"></div>
+				<div class="form-field">
+					<label for="address">ที่อยู่จัดส่ง:</label>
+					<textarea
+					required
+					class="form-control"
+					row="2"
+					id="address"
+					name="address"
+					placeholder="ตัวอย่าง: เลขที่ 20 ถนนพหลโยธิน เเขวงสามเสนใน พญาไทย กทม "
+					></textarea>
+				</div>
+
+				<div class="form-field">
+					<label for="zipcode">รหัสไปรษณีย์:</label>
+					<input
+					required
+					type="text"
+					class="form-control"
+					id="zipcode"
+					name="zipcode"
+					placeholder="ตัวอย่าง: 50100 "
+					/>
+				</div>
+
+				<label>เลือกประเภทการจัดส่ง</label>
+
+				<div class="form-check">
+					<label class="form-check-label" for="ems">
+					<input type="radio" name="shipping" id="ems" value="ems" /> EMS
+					(50 บาท)
+					</label>
+				</div>
+
+				<div class="form-check">
+					<label class="form-check-label" for="register">
+					<input
+						type="radio"
+						name="shipping"
+						id="register"
+						value="register"
+					/>
+					ลงทะเบียน (35 บาท)
+					</label>
+				</div>
+
+				<label>ช่องทางชำระเงิน</label>
+
+				<div class="form-check">
+					<label class="form-check-label" for="transfer">
+					<input
+						type="radio"
+						name="payment"
+						id="transfer"
+						value="transfer"
+					/>
+					โอนผ่านบัญชีธนาคาร
+					</label>
+				</div>
+				<div class="form-check">
+					<label class="form-check-label" for="cod">
+					<input type="radio" name="payment" id="cod" value="cod" />
+					เก็บเงินปลายทาง
+					</label>
+				</div>
+
+				<div class="form-field">
+					<textarea
+					class="form-control"
+					row="2"
+					id="other"
+					name="other"
+					placeholder="หมายเหตุ เช่น ฝากไว้ให้ยามหน้าบ้าน"
+					></textarea>
+				</div>
+				</div>
+
+				<hr />
+
+				<input
+				id="form-button"
+				class="btn btn-success btn-block"
+				type="submit"
+				value="ดำเนินการต่อ"
+				/>
+			</form>
+		</div>
+		{% if user_match == "True" %}
+		<div
+		class="box-element shadow p-3 mb-5 bg-white rounded invisible"
+		id="paymen-confirm"
+		>
+		<small id = "keyword" >ระบบจะทำการส่งคำสั่งซื้อของท่านไปใน messenger</small>
+
+		&nbsp&nbsp
+		<p class="btn btn-success btn-block" id="payment-confirm" 	hx-get="{% url "check_mes" %}" 
+			hx-target="this" 
+			hx-trigger="animate"
+			hx-swap = "outerHTML"
+			hx-indicator="none"
+		>
+			<i class="fa fa-check" style="font-size: 24px"></i>  ยืนยันคำสั่งซื้อนี้
+		</p>
+		</div>
+		{% else %}
+		<div
+		class="box-element shadow p-3 mb-5 bg-white rounded invisible"
+		id="paymen-confirm"
+		>
+		<small id = "keyword" >ท่านสามารถดูรายละเอียดคำสั่งซื้อของท่านได้ใน "order status" </small>
+
+		&nbsp&nbsp
+		<p class="btn btn-success btn-block" id="payment-confirm" 	hx-get="{% url "checkmodal" %}" 
+			hx-target="#modals-here" 
+			hx-trigger="openmodal"
+			_="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop">
+			<i class="fa fa-check" style="font-size: 24px"></i>  ยืนยันคำสั่งซื้อนี้
+		</p>
+		</div>
+		{% endif %}
+
+
+
+
+
+	</div>
+
+	<div class="col-lg-6">
+		<div class="box-element shadow p-3 mb-5 bg-white rounded">
+		<a class="btn btn-outline-dark" href="{% url 'mycart-page' %}"
+			>&#x2190; Back to Cart</a
+		>
+		<hr />
+		<h3>สรุปรายการสินค้า</h3>
+		<hr />
+		{% for item in mycart %}
+		<div class="row">
+			<div style="padding: 20px"></div>
+			<div style="flex: 2">
+			<img class="row-image rounded" src="{{item.Image}}" width="50" height="60	" />
+			</div>
+			<div style="flex: 2"><p>{{item.productname}}</p></div>
+			<div style="flex: 1"><p>{{item.price}}</p></div>
+			<div style="flex: 1"><p>x{{item.quantity}}</p></div>
+		</div>
+		<hr />
+		{% endfor %}
+		<h5>จำนวน: <b>{{Sum_quantity}}</b> ชิ้น</h5>
+		<h5>รวมยอด: <b>{{Sum_total}}</b> บาท</h5>
+		</div>
+	</div>
+</div>
+
+<!-- modal DOM-->
+<div id="modals-here"></div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+   var oid = ""
+   var user_match = "{{user_match}}"
+   console.log("user_match",user_match)
+   if(user == 'AnonymousUser'){
+
+   var user_cartquan = {{Sum_quantity}}
+
+   }else{
+
+   var user_cartquan = "{{user.profile.cartquan}}";
+   console.log(' Done1 alert')
+
+   }
+
+   var form = document.getElementById('form')
+   /*var keyword = document.getElementById('keyword')*/
+   // debug csrftoken
+   /*console.log('New token',form.getElementsByTagName("input")[0].value )*/
+   csrftoken = form.getElementsByTagName("input")[0].value
+ 
+
+   form.addEventListener('submit', function(e){
+   	e.preventDefault()
+   	console.log('Form Submitted...')
+
+	document.getElementById('form-button').classList.add("invisible");
+	document.getElementById('paymen-confirm').classList.remove("invisible");
+
+   })
+
+
+  document.getElementById('payment-confirm').addEventListener('click', function(e){
+	  			/* บันทึกคำสั่งซื้อไว้ใน database */
+		if((user_cartquan != 0) || (user_cartquan != '0') ){
+		console.log('Done2 alert false')
+	
+
+			if(user == 'AnonymousUser'){
+
+				if(user_match === "True"){
+					htmx.trigger(htmx.find("#payment-confirm"), "animate")
+					}
+				submitFormDataAnonymous()
+
+			}else{
+				console.log('submitFormDataUser()')
+				submitFormDataUser()
+			}
+
+		}else{
+			alert('Your cart is empty !!!');
+			console.log(' Done2 alert')
+		}
+	
+   })
+
+
+   function submitFormDataUser(){
+   	console.log('in function +++')
+   var userFormData = {
+   	'name':null,
+   	'tel':null,
+   	'address':null,
+   	'zipcode':null,
+   	'shipping':null,
+   	'payment':null,
+   	'other':null,
+   }
+
+   userFormData.name = form.name.value
+   userFormData.tel = form.tel.value
+   userFormData.address = form.address.value
+   userFormData.zipcode = form.zipcode.value
+   userFormData.shipping = form.shipping.value
+   userFormData.payment = form.payment.value
+   userFormData.other = form.other.value
+
+
+
+
+   var url = '/processorder/'
+
+	const fetchUser = fetch(url,{
+		method: 'POST',
+		headers:{
+			'Content-Type':'application/json',
+			'X-CSRFToken':csrftoken,
+		},
+		body: JSON.stringify({'form':userFormData}),
+		})
+
+   .then((response)=>response.json())
+   .then((data)=> {
+	/* define value to oid */
+	oid = data
+   	console.log('Success: ',data);
+   	htmx.trigger(htmx.find("#payment-confirm"), "openmodal")
+
+   /* window.location.href = '{% url 'orderlist-page' %}' */
+	return data
+   })
+  }
+
+   function submitFormDataAnonymous(){
+   		var userFormData = {
+   			'name':null,
+   			'email':null,
+   			'tel':null,
+   			'address':null,
+   			'zipcode':null,
+   			'shipping':null,
+   			'payment':null,
+   			'other':null
+			
+   		}
+
+   		userFormData.name = form.name.value
+		if(user_match === "True"){
+   		userFormData.email = null
+		}else{
+		userFormData.email = form.email.value
+		}
+   		userFormData.tel = form.tel.value
+   		userFormData.address = form.address.value
+   		userFormData.zipcode = form.zipcode.value
+   		userFormData.shipping = form.shipping.value
+   		userFormData.payment = form.payment.value
+   		userFormData.other = form.other.value
+	
+
+
+
+   		var url = '/processorder/'
+
+   		const fetchAnonymous = fetch(url,{
+   			method: 'POST',
+   			headers:{
+   				'Content-Type':'application/json',
+   				'X-CSRFToken':csrftoken,
+   			},
+   			body: JSON.stringify({'form':userFormData}),
+   			})
+   		.then((response)=>response.json())
+   		.then((data)=> {
+			/* define value to oid */
+			oid = data
+   			console.log('Success: ',data);
+   		
+   		// reset cart cookie
+   			cart = {}
+   			document.cookie = 'cart=' + JSON.stringify(cart) + ';domain;path=/'
+   		/* save user'email to cookie data */
+			/*email = form.email.value
+			document.cookie = 'email=' + JSON.stringify(email) + ';domain;path=/'*/
+				/*window.location.href = '{% url 'orderlist-page' %}' */
+			if(user_match === "True"){
+				const urlI = '/post_facebook/';
+				return fetch(urlI,{
+								method: 'POST',
+								headers:{
+									'Content-Type':'application/json',
+									'X-CSRFToken':csrftoken,
+								},
+								body: JSON.stringify({'data':data}),
+								})
+				.then(responseI => responseI.json())
+				.then(responseBodyI => {
+					console.log('The response body of the inner/nested request:');
+					console.log(JSON.stringify(responseBodyI) + '\n\n');
+					htmx.addClass(htmx.find('#ind'), 'hidden');
+					htmx.removeClass(htmx.find('#txt'), 'hidden');
+					htmx.addClass(htmx.find('#txt'), 'anima');
+					return responseBodyI;
+				})
+			}else{
+				htmx.trigger(htmx.find("#payment-confirm"), "openmodal")
+			}
+			return data
+   		})
+
+
+
+
+  	 }
+
+
+function closeModal() {
+	var container = document.getElementById("modals-here")
+	var backdrop = document.getElementById("modal-backdrop")
+	var modal = document.getElementById("modal")
+
+	modal.classList.remove("show")
+	backdrop.classList.remove("show")
+
+	setTimeout(function() {
+		container.removeChild(backdrop)
+		container.removeChild(modal)
+	}, 200)
+	
+	console.log("OID = ",oid)
+	if(oid !== ""){
+	window.location='{% url 'myorderdetail-page' 123 %}'.replace(/WdmvRkYZYA/, oid);
+	} 			
+	
+	return false;
+}
+
+
+</script>
+
+{% endblock content0%}
+

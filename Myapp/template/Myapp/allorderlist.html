@@ -1,0 +1,128 @@
+
+{% extends 'Myapp/Base.html' %}  
+{% load humanize%}
+{% load static %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+{% block content0 %}
+
+
+
+	<div class="container" style = 'margin-bottom: 50px'>
+		<h3>รายการสั่งซื้อทั้งหมด (admin)</h3>
+		<p>สถานะรายการสั่งซื้อ ท่านสามารถอัปโหลดไฟล์รูปสลิปได้</p>
+		<table class="table table-sm table-responsive table-striped" id="tabl">
+			<thead class="thead-dark">
+			<tr>
+				<th>เวลาสั่งซื้อ</th>
+				<th>order id</th>
+				<th>ประเภท</th>
+				<th>ยอดรวม(ไม่รวมส่ง)</th>
+				<th>ค่าส่ง</th>
+				<th>โอนทั้งหมด</th>
+				<th>สลิป</th>
+				<th>อนุมัติ</th>
+				<th>Tracking Number </th>
+				
+			
+			</tr>
+			</thead>
+			<tbody >
+				{% for od in allorder %}
+
+					<tr>
+						<td>{{od.stamp}}</td>
+						<td>{{od.orderid}}({{od.customername}})</td>
+						<td>
+						{% if od.payment == "cod" %}
+						<span>ปลายทาง</span>
+						{% elif od.payment == "transfer"%}
+						<span>โอน</span>
+						{% endif %}
+						</td>
+						<td>{{od.total| intcomma}}</td>
+						<td>{{od.shipcost| intcomma}}</td>
+						<td>{{od.shipcost|add:od.total| intcomma}}</td>
+						<td>
+                        {%if od.slip %}
+                           <a href = '{{od.slip.url}}' class = 'btn btn-primary ' >ดูสลิป</a>
+                        {%else%}
+                            <i class="fa fa-times-rectangle" style = 'font-size: 32px; color: red'></i>
+                        {%endif%}
+                        
+                        </td>
+						<td>
+						{% if od.payment == "transfer" %}
+							{% if od.paid and od.slip %}
+								<a hx-post={% url 'updatestatus' od.orderid 'cancle' %} hx-target="#tabl" hx-select="#tabl"  hx-swap="outerHTML" hx-indicator="none" class = 'btn btn-light' ><i class="fa fa-check-square" style = 'font-size: 32px; color: green'></i></a>
+							{% elif od.slip %}
+								<a hx-post={% url 'updatestatus' od.orderid 'confirm' %} hx-target="#tabl" hx-select="#tabl"  hx-swap="outerHTML" hx-indicator="none" class = 'btn btn-light' ><i class="fa fa-thumbs-up" style = 'font-size: 16px; color: blue'>ยืนยัน</i></a>
+							{%else %}
+								<i class="fa fa-times-rectangle" style = 'font-size: 32px; color: red'></i>
+							{%endif%}
+						{% elif od.payment == "cod" %}
+							{% if od.approved %}
+								<a hx-post={% url 'updatestatus' od.orderid 'cancel' %} hx-target="#tabl" hx-select="#tabl"  hx-swap="outerHTML" hx-indicator="none" class = 'btn btn-light' ><i class="fa fa-check-square" style = 'font-size: 32px; color: green'></i></a>
+							{% else %}
+								<a hx-post={% url 'updatestatus' od.orderid 'confirm' %} hx-target="#tabl" hx-select="#tabl"  hx-swap="outerHTML" hx-indicator="none" class = 'btn btn-light' ><i class="fa fa-thumbs-up" style = 'font-size: 16px; color: blue'>ยืนยัน</i></a>
+							{% endif %}
+
+						{% endif %}
+						</td>
+						<td>
+						{%if od.trackingnumber != None%}
+						<a href = '{% url 'updatetracking-page' od.orderid %}' class = 'btn btn-light'><i class="fa fa-pencil" style = 'font-size: 16px; color: blue'>{{od.trackingnumber}}</i></a>
+						{% else %}
+						<a href = '{% url 'updatetracking-page' od.orderid %}' class = 'btn btn-warning'>กรอกหมายเลข EMS</a>
+						{%endif%}
+						</td>
+					</tr>
+
+				{%endfor%}
+			
+			</tbody>
+		</table>
+
+		
+	</div>
+	
+	<ul class="pagination">
+		
+
+		{% if allorder.has_previous == True and allorder.has_next == True%}
+		<li class="page-item"><a class="page-link" href="?page={{allorder.previous_page_number}}"><</a></li>
+		<li class="page-item"><a class="page-link" href="?page={{allorder.number|add:-1}}">{{allorder.number|add:-1}}</a></li>
+		{% endif %}
+
+
+		{%if allorder.has_next%}
+		<li class="page-item active"><a class="page-link" href="?page={{allorder.number}}">{{allorder.number}}</a></li>
+		{%endif%}
+
+		{% if allorder.has_next == True and allorder.has_previous == True %}
+		<li class="page-item"><a class="page-link" href="?page={{allorder.number|add:1}}">{{allorder.number|add:1}}</a></li>
+		<li class="page-item"><a class="page-link" href='?page={{allorder.next_page_number}}'>></a></li>
+		{% elif allorder.has_next == False and allorder.has_previous == True %}
+		<li class="page-item"><a class="page-link" href="?page={{allorder.previous_page_number}}"><</a></li>
+		{% elif allorder.has_next == True and allorder.has_previous == False %}
+		<li class="page-item"><a class="page-link" href="?page={{allorder.number|add:1}}">{{allorder.number|add:1}}</a></li>
+		<li class="page-item"><a class="page-link" href="?page={{allorder.number|add:2}}">{{allorder.number|add:2}}</a></li>
+		<li class="page-item"><a class="page-link" href='?page={{allorder.next_page_number}}'>></a></li>
+		{% endif %}
+		
+	</ul>
+	<p>หน้าที่ {{allorder.number}} จากทั้งหมด {{allorder.paginator.num_pages}} หน้า</p>
+
+
+
+			
+
+{% endblock content0%}
+
+
+
+
+
+

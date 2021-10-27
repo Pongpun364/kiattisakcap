@@ -1,0 +1,23 @@
+
+{% extends 'Myapp/Base.html' %}  
+{%load static %}
+{% block scriptss%}
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+{% endblock %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+
+
+{% block content0 %}
+
+	<h3> คุณคือ  {{name}} </h3>
+
+
+{% endblock content0%}
+
+
+
+
+

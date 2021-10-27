@@ -1,0 +1,122 @@
+
+
+{% extends 'Myapp/Base.html' %}  
+{% load static %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/style.css' %}>
+{% endblock %}
+
+{% block content0 %}
+
+
+
+
+<div class = 'container' style = 'margin-bottom: 100px'>
+
+  
+  <h2>เเก้ไขรายละเอียดสินค้า: {{product.name }}</h2>
+  <p>คุณสามารถเพิ่มสินค้าเข้าไปในระบบได้ (เฉพาะแอดมิน)</p>
+  <form method = "POST" enctype= "multipart/form-data">	 
+		{% csrf_token %} 
+
+		{% if product.Image %}
+			<img  src="{{product.Image.url}}" width = '500' height =  '600'>
+		{% elif product.Imageurl %}
+			<img  src="{{product.Imageurl}}" width = '500' height =  '600'>
+		{%else%}
+			<img  src="/media/SD-default-image.png" width = '500' height =  '600'>
+		{%endif%}
+		<br><br>
+
+
+		<div class="form-group">
+			<label for="Imageupload">เลือกรูปภาพจากเครื่องของคุณ</label>
+			<input type="file" class="form-control" id="Imageupload" name="Imageupload">
+		</div>
+		<div class="form-group">
+			<label for="name">ชื่อสินค้า:</label>
+			<input type="text" class="form-control" id="name" name="name" value = {{product.name }}>
+		</div>
+
+		<div class="form-group">
+			<label for="price">ราคา:</label>
+			<input type="text" class="form-control" id="price" name="price" value = {{product.price}} >
+		</div>
+
+
+		<div class="form-group">
+			<label for="detail">รายละเอียด:</label>
+			<textarea class="form-control" rows="8" id="detail" name = 'detail'>{{product.detail }}</textarea>
+		</div>
+
+		<div class = "form-group">
+			<label for "sell">เลือกประเภทสินค้า: </label>
+			<select class = "form-control" id = "sell" name = "category">
+			
+			{% for ct in category %}
+					{% if ct.catname == product.catname.catname%}
+					<option selected = 'selected'> {{ct.catname}} </option>
+					{%else%}
+					<option> {{ct.catname}} </option>
+					{%endif%}
+			{%endfor%}
+
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="Imageurl">URL รูปสินค้า:</label>
+			<input type="text" class="form-control" id="Imageurl" name="Imageurl" value = {{product.Imageurl}}>
+		</div>
+
+		<div class="form-group">
+			<label for="quantity">จำนวน:</label>
+			<input type="text" class="form-control" id="quantity" name="quantity" value = {{product.quantity}}>
+		</div>
+
+		<div class="form-group">
+			<label for="unit">หน่วย:</label>
+			<input type="text" class="form-control" id="unit" name="unit" value = {{product.unit}}>
+		</div>
+
+        <div class="form-group">
+            <p>มีสินค้าในสต็อกหรือไม่ ?</p>
+            {% if product.instock %}
+			<label class = 'form-check-label' for='instock_True'>มี </label>
+			<input type = 'radio' name = 'instock' id = 'instock_True' value = 'instock_True' checked> 
+            <label class = 'form-check-label' for='instock_False'>หมด</label>
+			<input type = 'radio' name = 'instock' id = 'instock_False' value = 'instock_False'> 
+
+            {% else %}
+			<label class = 'form-check-label' for='instock_True'>มี </label>
+			<input type = 'radio' name = 'instock' id = 'instock_True' value = 'instock_True'> 
+            <label class = 'form-check-label' for='instock_False'>หมด</label>
+			<input type = 'radio' name = 'instock' id = 'instock_False' value = 'instock_False'  checked> 
+            {%endif%}
+		</div>
+
+
+
+
+
+		{% comment %} <div class="form-group">
+			<label for="Image">อัปโหลดไฟล์รูปสินค้า:</label>
+			<input type="text" class="form-control" id="Image" name="Image">
+		</div> {% endcomment %}
+
+
+		<button type="submit" class="btn btn-primary" >Submit</button>
+  </form>
+
+
+</div>
+
+{% endblock content0%}
+
+
+
+
+
+
+

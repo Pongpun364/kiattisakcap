@@ -1,0 +1,213 @@
+{% extends 'Myapp/Base.html' %}  
+{% load humanize %}
+{% load static %}
+{% block styles %}
+	<link rel="stylesheet" href={% static 'css/all_style.css' %}>
+	<link rel="stylesheet" href={% static 'css/mycart.css' %}  />
+{% endblock %}
+{% block content0 %}
+<script type="text/javascript" src="{% static "js/bootstrap-input-spinner.js" %}" ></script>
+
+{% comment %} <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> {% endcomment %}
+
+
+
+{%if status == 'delete' %}
+ <div class="alert alert-danger">
+	
+    <strong>ลบสินค้าเรียบร้อยเเล้ว!</strong> ท่านสามารถกดสั่งใหม่ได้ ถ้าต้องการ
+  </div>
+{%endif%}
+
+
+	<div class="container px-0" style = 'margin-bottom: 20px;margin-top: 100px'>
+		<div class="row">
+		
+				<div class="col-lg-12 p-sm-3 p-md-3 p-lg-3 px-0">
+					<div class="box-element shadow p-3 mb-5 bg-white rounded ">
+
+						<a  class="btn btn-outline-dark" href="{% url 'allproduct-page' %}">&#x2190; Continue Shopping</a>
+						<a href = {%url	 'checkout-page'%} class = 'btn btn-success' style = 'float: right;margin-right: 10px'>Checkout</a>
+
+						<br>
+						<br>
+						<div class="d-flex align-items-end">
+						<div class = "d-flex ml-auto pr-4">
+							<h3>ยอดรวม: ฿<span id="minput">{{Sum_total}}</span></h3>
+						</div>
+						</div>
+
+					{% if user.is_authenticated %}
+						<div class="list-group list-group-flush">
+						{% for pd in mycart %}
+							<div class="list-group-item px-0">
+							<div class="row">
+								<div class="col-3">
+								<img class="img-fluid rounded " src="{{pd.Image}}" >
+								</div>
+								<div class="col-7 d-flex">
+								<p class="pd-name"><strong>{{pd.productname}}</strong></p>
+								<p class="text-muted mb-1">฿{{pd.price}}</p>
+										
+									<div style="width: 130px;" class="mt-auto">
+										<form method="POST" hx-post= {% url "updatecart"  %}  hx-target="#idf" hx-select="#idf" hx-swap="outerHTML" hx-indicator="none" hx-trigger="change delay:500ms"  >
+											{% csrf_token %}
+											<div class="form-group" style="margin-bottom: 0px;">
+											<input type="hidden" class="form-control" name="pid" value={{pd.productid}}>
+											</div>
+											<div class="form-group" style="margin-bottom: 0px;">
+											<input   class="form-control spinner" type="text" required name="quantity" value="{{pd.quantity}}" min="0" max="1000" step="1"/>
+										
+											</div>
+										</form>
+									</div>
+																				
+								</div>
+								<div class="col-2 d-flex ">
+									<div class="ml-auto p-2 pr-4">
+									<div class="hidden user-animation" hx-get= {% url "dummy"  %} hx-swap="outerHTML swap:5s" hx-indicator="closest .list-group-item" hx-trigger="dummy" hx-target="closest .list-group-item" ></div>
+									<a class = "delete_cart" hx-post={% url "delete_mycart" pd.productid %} hx-trigger="click" hx-target="#idf" hx-select="#idf" hx-indicator="closest .list-group-item" hx-swap="outerHTML swap:150ms" ><i class="fas fa-trash-alt fa-2x" ></i></a>
+									</div>
+								</div>
+							</div>
+							</div>
+						{%endfor%}
+						</div>
+
+					{% else %}
+						<div class="list-group list-group-flush">
+						{% for pd in mycart %}
+							<div class="list-group-item px-0">
+							<div class="row">
+								<div class="col-3">
+								<img class="img-fluid rounded " src="{{pd.Image}}" >
+								</div>
+								<div class="col-7 d-flex">
+								<p class="pd-name"><strong>{{pd.productname}}</strong></p>
+								<p class="text-muted mb-1">฿{{pd.price}}</p>
+										
+									<div style="width: 130px; " class="mt-auto">
+										<div id="anonymous_wa" hx-get= {% url "mycart-page"  %} hx-trigger="update_mycart delay:500ms"  hx-target="#idf" hx-select="#idf" hx-indicator="none" hx-swap="outerHTML">
+																									
+											<input type="hidden" name="pid" value={{pd.id}}>																
+											<input   class=" spinner-anonymous" type="text" required name="quantity" value={{pd.quantity}} min="0" max="1000" step="1"/>
+										</div>
+									</div>
+																				
+								</div>
+								<div class="col-2 d-flex ">
+									<div class="ml-auto p-2 pr-4">
+									<div class="hidden ano-mycart" hx-get= {% url "mycart-page"  %} hx-swap="outerHTML swap:150ms" hx-indicator="closest .list-group-item" hx-trigger="update_mycart_delete" hx-target="#idf" hx-select="#idf"></div>
+									<a  class = "delete_cart delete_ano"  hx-get= {% url "dummy"  %} hx-swap="outerHTML swap:5s" hx-indicator="closest .list-group-item" hx-trigger="dummy" hx-target="closest .list-group-item" data-pid = {{pd.id}} ><i class="fas fa-trash-alt fa-2x"  ></i></a>
+									</div>
+								</div>
+							</div>
+							</div>
+						{%endfor%}
+						</div>
+					{% endif%}
+
+					</div>
+
+				</div>
+			<br>
+
+
+
+		</div>
+	</div>
+
+
+
+<script>
+$(".spinner").inputSpinner()
+$(".spinner-anonymous").inputSpinner()
+
+$(".spinner-anonymous").each(function() {
+
+	$(this).on("change", function (event) {
+
+		var pid = $(this).siblings().val()
+		var pvalue = $(this).val()
+		/* ทำการเขียนข้อมูลลงใน cookie */
+		addcookieItem(pid,pvalue)
+		
+		})
+	/*console.log("value = ",$(this).val()) */
+
+} );
+
+function addcookieItem(pid,pvalue){
+    console.log('not loged in ...')
+    /*cart = {
+        1:{'quantity':5},
+        9:{'quantity':2},
+        8:{'quantity':4},
+        7:{'quantity':5},
+        2:{'quantity':5},
+      } */
+ 	cart[pid]['quantity']  = parseInt(pvalue)
+
+    if(cart[pid]['quantity'] <= 0){
+           console.log('remove item')
+           delete cart[pid]
+       }
+    
+    console.log('cart' ,cart)
+    document.cookie = 'cart=' + JSON.stringify(cart) + ';domain;path=/'
+	htmx.trigger(htmx.find("#anonymous_wa"), "update_mycart")
+
+}
+
+
+ /*  delete cart for anonymous */
+$(".delete_ano").each(function() {
+
+	$(this).on("click", function (event) {
+		var elm = $(this).siblings()[0]
+		var pid = $(this).data("pid")
+		console.log("pid",pid)
+		/* ทำการลบข้อมูลนี้ใน cookie */
+		htmx.trigger($(this)[0], "dummy")
+		deleteCookieItem(pid,elm)
+		
+	})
+
+});
+
+function deleteCookieItem(pid,elm){
+
+		delete cart[pid]
+		console.log('remove item')
+	
+	console.log('cart' ,cart)
+    document.cookie = 'cart=' + JSON.stringify(cart) + ';domain;path=/'
+	htmx.trigger(elm, "update_mycart_delete")
+	
+ }
+
+
+
+
+ {% comment %} $("#spinner").on("input",function(e){
+    $("#minput").html($(this).val())
+ })  {% endcomment %}
+
+ /*  delete cart for user */
+$(".delete_cart").each(function() {
+
+	$(this).on("click", function (event) {
+		htmx.trigger($(this).siblings()[0], "dummy")
+	})
+
+});
+
+</script>
+
+{% endblock content0 %}
+
+
+
+
+
+
