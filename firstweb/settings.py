@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$w=6s53yt$bmxttr@uw67&$ru@z642o5fapo!-e-21zn!%e_-m'
-HASHIDS_SALT = "fdkm$#!fdksgmfl51gr3sg$#dsgggf"
+SECRET_KEY = os.environ.get('SECRET_KEY')
+HASHIDS_SALT = os.environ.get('HASHIDS_SALT')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-LINE_CHANNEL_ACCESS_TOKEN = "y0YOePYzJz/pLnYAxBto9TirWCQze/1J3jF4GBt+bPcRP2EnTEoD98bTEZx4TVZ/VXlg6RHM3VrpUMKT1dw4HekcOrtgTt43RPBiojAUnJAoqTteh3HIq73PCWg0VT6DqD6m1r8cLcoH5emSAwr/xgdB04t89/1O/w1cDnyilFU="
-LINE_CHANNEL_SECRET = "8f039320d8eb547457c178dfd21c65bb"
+LINE_CHANNEL_ACCESS_TOKEN = os.environ.get('LINE_CHANNEL_ACCESS_TOKEN')
+LINE_CHANNEL_SECRET = os.environ.get('LINE_CHANNEL_SECRET')
 ALLOWED_HOSTS = ['*']
 
 # SESSION_SAVE_EVERY_REQUEST = True
