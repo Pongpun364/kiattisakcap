@@ -25,9 +25,9 @@ RUN apk update &&\
 
 
 # copy entrypoint.sh
-COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/firstweb/entrypoint.sh
-RUN chmod +x /usr/src/firstweb/entrypoint.sh
+COPY ./entrypoint.prod.sh .
+RUN sed -i 's/\r$//g' /usr/src/firstweb/entrypoint.prod.sh
+RUN chmod +x /usr/src/firstweb/entrypoint.prod.sh
 
 # copy project
 COPY . .
