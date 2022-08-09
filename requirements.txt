@@ -14,7 +14,6 @@ liffpy==0.0.1a3
 line-bot-sdk==1.20.0
 Markdown==3.3.4
 Pillow==8.3.1
-psycopg2==2.9.1
 pycparser==2.20
 pytz==2021.1
 requests==2.26.0
@@ -22,4 +21,3 @@ songline==0.0.1
 sqlparse==0.4.1
 urllib3==1.26.6
 whitenoise==5.3.0
-django-dotenv
