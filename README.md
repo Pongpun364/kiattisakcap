@@ -1,3 +1,3 @@
 # kiattisakcap
 e-commerce for hat selling
-## Live project can be found [here!](https://kiattisakcap.com)
+## Live project can be found [here!](http://172.105.125.113/)
